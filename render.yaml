@@ -1,0 +1,13 @@
+services:
+  - name: analytics-api
+    type: web
+    runtime: node
+    region: oregon
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    buildCommand: npm install
+    startCommand: npm start
