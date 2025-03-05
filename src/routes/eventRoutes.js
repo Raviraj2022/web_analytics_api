@@ -1,8 +1,14 @@
 import express from "express";
-import { collectEvent } from "../controllers/eventControllers.js";
+// import { RateLimiterRedis } from "rate-limiter-flexible";
+import { collectEvent, getEventSummary } from "../controllers/eventControllers.js";
 import { apiKeyAuth } from "../middleware/apiKeyMiddleware.js";
+import { eventRateLimiter, retrievalRateLimiter } from "../middleware/rateLimitter.js";
 
 const router = express.Router();
+
+
+
+  
 
 /**
  * @swagger
@@ -47,6 +53,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized (Invalid API Key)
  */
-router.post("/collect", apiKeyAuth, collectEvent);
+router.post("/collect", eventRateLimiter, apiKeyAuth, collectEvent);
+router.get("/event_summary", retrievalRateLimiter, apiKeyAuth, getEventSummary);
 
 export default router;
